@@ -1,3 +1,6 @@
+.vscode/
+SFML/
+
 # Prerequisites
 *.d
 
