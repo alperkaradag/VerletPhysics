@@ -14,10 +14,13 @@ int main()
     sf::RenderWindow window(sf::VideoMode(800, 800), "main");
     window.setFramerateLimit(60.0f);
 
-    VerletCircle* vo = core::New<VerletCircle>();
-    vo->shape.setFillColor(sf::Color::Green);
+    /*VerletCircle* vo = core::New<VerletCircle>(Vec2{400.0f, 200.0f}, 30.0f);
+    vo->shape.setFillColor(sf::Color::Green);*/
 
-    //sf::CircleShape shape(100.f);
+    sf::CircleShape constraintShape(300.f, 1<<7);
+    constraintShape.setFillColor(sf::Color(142, 142, 142));
+    constraintShape.setOrigin(sf::Vector2f(300.0f, 300.0f));
+    constraintShape.setPosition(sf::Vector2f(400.0f, 400.0f));
 
     while (window.isOpen())
     {
@@ -30,10 +33,17 @@ int main()
         {
             if (event.type == sf::Event::Closed)
                 window.close();
+            if(event.type == sf::Event::MouseButtonPressed){
+                if(event.mouseButton.button == sf::Mouse::Left){
+                    Vec2 mousePos{(float)event.mouseButton.x, (float)event.mouseButton.y};
+                    core::New<VerletCircle>(mousePos, 30.0f, sf::Color::Cyan);
+                }
+            }
         }
 
         window.clear();
         Solver::get_instance().update(Globals::delta_time);
+        window.draw(constraintShape);
         for(auto s : core::get_objects<VerletCircle>()){
             window.draw(s->shape);
         }

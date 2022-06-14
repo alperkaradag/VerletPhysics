@@ -1,5 +1,6 @@
 #pragma once
 
+#include <math.h>
 #include <SFML/System/Vector2.hpp>
 #include <string>
 
@@ -33,6 +34,19 @@ struct Vec2
         x *= s;
         y *= s;
         return *this;
+    }
+
+    Vec2 operator/(float s) const {
+        return {x / s, y / s};
+    }
+    Vec2& operator/=(float s) {
+        x /= s;
+        y /= s;
+        return *this;
+    }
+
+    inline float length() const {
+        return (float)sqrtl(x*x + y*y);
     }
     
 

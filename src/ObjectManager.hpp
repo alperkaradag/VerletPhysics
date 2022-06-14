@@ -61,9 +61,9 @@ public:
 namespace core
 {   
 
-template<typename T>
-static T* New(){
-    T* t = new T();
+template<typename T, typename... Args>
+static T* New(Args... args){
+    T* t = new T(args...);
     ObjectManager::get_instance().track_object(t);
     return t;
 }

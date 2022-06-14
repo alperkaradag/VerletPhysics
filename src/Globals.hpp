@@ -15,6 +15,7 @@ static float count_fps(const sf::RenderWindow& window){
     delta_time = game_time - last_game_time;
     fps = 1.f / delta_time;
     last_game_time = game_time;
+    return fps;
 } 
 
 }
