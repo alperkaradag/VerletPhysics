@@ -74,7 +74,20 @@ static void Delete(T* t){
 }
 
 template<typename T>
-static std::unordered_set<T*> get_objects(){
+static std::unordered_set<T*> get_objects_set(){
     return ObjectManager::get_instance().get_objs<T>();
+}
+
+template<typename T>
+static std::vector<T*> get_objects_vector(){
+    std::unordered_set<T*> s = ObjectManager::get_instance().get_objs<T>();
+    std::vector<T*> v;
+    v.insert(v.end(), s.begin(), s.end());
+    return v;
+}
+
+template<typename T>
+static uint32_t get_object_count(){
+    return ObjectManager::get_instance().get_objs<T>().size();
 }
 }

@@ -11,21 +11,23 @@ using namespace std;
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(800, 800), "main");
+    std::srand(std::time(nullptr));
+
+    sf::RenderWindow window(sf::VideoMode(1600, 900), "main");
     window.setFramerateLimit(60.0f);
 
     /*VerletCircle* vo = core::New<VerletCircle>(Vec2{400.0f, 200.0f}, 30.0f);
     vo->shape.setFillColor(sf::Color::Green);*/
 
-    sf::CircleShape constraintShape(300.f, 1<<7);
+    sf::CircleShape constraintShape(400.f, 1<<7);
     constraintShape.setFillColor(sf::Color(142, 142, 142));
-    constraintShape.setOrigin(sf::Vector2f(300.0f, 300.0f));
-    constraintShape.setPosition(sf::Vector2f(400.0f, 400.0f));
+    constraintShape.setOrigin(sf::Vector2f(400.0f, 400.0f));
+    constraintShape.setPosition(sf::Vector2f(800.0f, 450.0f));
 
     while (window.isOpen())
     {
         Globals::count_fps(window);
-        string title = "fps: " + to_string((int)Globals::fps);
+        string title = "fps: " + to_string((int)Globals::fps) + " obj: " + to_string(core::get_object_count<VerletCircle>());
         window.setTitle(title);
 
         sf::Event event;
@@ -34,9 +36,15 @@ int main()
             if (event.type == sf::Event::Closed)
                 window.close();
             if(event.type == sf::Event::MouseButtonPressed){
+                Vec2 mousePos{(float)event.mouseButton.x, (float)event.mouseButton.y};
                 if(event.mouseButton.button == sf::Mouse::Left){
-                    Vec2 mousePos{(float)event.mouseButton.x, (float)event.mouseButton.y};
-                    core::New<VerletCircle>(mousePos, 30.0f, sf::Color::Cyan);
+                    core::New<VerletCircle>(mousePos, 10.0f);
+                }
+                else if(event.mouseButton.button == sf::Mouse::Right){
+                    for(int i = 0; i < 100; i++){
+                        Vec2 rvec = Vec2::random_vector(-30, 30, -30, 30);
+                        core::New<VerletCircle>(mousePos + rvec, Globals::rand_int(5, 10));
+                    }
                 }
             }
         }
@@ -44,7 +52,7 @@ int main()
         window.clear();
         Solver::get_instance().update(Globals::delta_time);
         window.draw(constraintShape);
-        for(auto s : core::get_objects<VerletCircle>()){
+        for(auto s : core::get_objects_set<VerletCircle>()){
             window.draw(s->shape);
         }
         window.display();

@@ -1,6 +1,7 @@
 #pragma once
 #include "Vec2.hpp"
 #include <SFML/Graphics/CircleShape.hpp>
+#include "Globals.hpp"
 
 
 /* Verlet integration */
@@ -26,7 +27,7 @@ struct VerletCircle
         shape = sf::CircleShape(radius);
     }
 
-    VerletCircle(Vec2 current_position, float radius = 60.0f, sf::Color color = sf::Color::Green)
+    VerletCircle(Vec2 current_position, float radius = 60.0f, sf::Color color = sf::Color(Globals::rand_color()))
     {
         this->current_position = current_position;
         this->radius = radius;
